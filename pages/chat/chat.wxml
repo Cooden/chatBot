@@ -17,6 +17,6 @@
     </view>
   <view class="handleBox">
     <input class="input_submit" placeholder="" value="{{inputTemp}}" bindinput="bindKeyInput" />
-    <button type="submit" class="btn_submit" size="mini" bindtap="submitTo">发送</button>
+    <button type="submit" class="button green" size="mini" bindtap="submitTo" >发送</button>
   </view>
 </view>
