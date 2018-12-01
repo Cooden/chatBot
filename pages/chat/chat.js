@@ -111,7 +111,8 @@ Page({
   onLoad: function() {
     let that = this;
     wx.setNavigationBarTitle({
-      title: '聊天机器人24小时在线',
+      title: 'l',
+      navigationBarBackgroundColor: 'blue',
       success: function() {
         // console.log("success")
       },
