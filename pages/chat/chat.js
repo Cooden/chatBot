@@ -7,7 +7,8 @@ Page({
     allContentList: [],
     key: "d13b441029804ee99fc4e3b617a5f557",
     access_token: '',
-    num: 0
+    num: 0,
+    session_id: 1,
   },
   //绑定键盘按下事件，讲输入的值赋给data
   bindKeyInput: function(e) {
@@ -26,7 +27,7 @@ Page({
       "value": outsider.data.inputValue
     });
     console.log(outsider.data.allContentList);
-    var words=new Array("白居易","李白","唐诗","笑话","故事");
+    var words = new Array("我想想","望路山瀑布", "诗", "嗯", "忆江南", "登高", "白居易", "李白", "笑话", "故事", "赋得古原草送别", "忆江南", "钱塘湖春行", "赠汪伦", "蜀道难", "将进酒", "绝句", "望岳", "江畔独步寻花", "琵琶行", "春望", "静夜思", "行路难");
     for(var i=0;i<words.length;i++){
        if (outsider.data.inputValue.indexOf(words[i]) > -1) {
         outsider.Unit(e);
@@ -35,20 +36,23 @@ Page({
          return;
        }
      }
-    outsider.tuling(e);
+    outsider.chatterbot(e);
   },
 
   Unit: function(e){
     let outsider = this;
+    var session = "{\"session_id\":\""+outsider.data.session_id+"\"}";
+    //outsider.data.
     let _url = 'https://aip.baidubce.com/rpc/2.0/unit/bot/chat?access_token=' + outsider.data.access_token;
     wx.request({
       url: _url,
       data: {
-        "bot_session": "",
+        "bot_session": abc,
         "request": {
           "bernard_level": 1,
           "user_id": "88888",
           "client_session": "{\"client_results\":\"\", \"candidate_options\":[]}",
+          //"client_session": {"client_results":"", "candidate_options":[]},
           "query": outsider.data.inputValue,
           "query_info": {
             "source": "KEYBOARD",
@@ -67,7 +71,7 @@ Page({
       success: function (res) {
         let data = res.data;
         console.log(data);
-        
+
         var response = data.result.response.action_list[0].say;
         console.log(response);
         outsider.data.allContentList.push({ "value": response });
@@ -75,18 +79,17 @@ Page({
           returnValue: data.result.response.action_list[0].say,
           allContentList: outsider.data.allContentList
         });
-
       },
     });
   },
-  tuling: function(e){
+  chatterbot: function(e){
     let outsider = this;
-    let _url = `https://www.tuling123.com/openapi/api`;
+    let _url = `http://handcong.cc/get_response`
+    // console.log(_url);
     wx.request({
       url: _url,
       data: {
-        key: outsider.data.key,
-        info: outsider.data.inputValue
+        user_input: outsider.data.inputValue
       },
       //封装返回数据格式
       header: {
@@ -95,14 +98,14 @@ Page({
       //请求成功的回调
       success: function (res) {
         let data = res.data;
-        if (data.code === 100000) {   //100000 表示返回成功
-          outsider.data.allContentList.push({ "value": data.text });
-          //调用set方法，告诉系统数据已经改变   启动循环，循环聊天信息
-          outsider.setData({
-            returnValue: data.text,
-            allContentList: outsider.data.allContentList
-          })
-        } else {}
+        var say = unescape(data.response.replace(/\\u/g, '%u'));
+        console.log(say);
+        outsider.data.allContentList.push({ "value": say});
+        //调用set方法，告诉系统数据已经改变启动循环，循环聊天信息
+        outsider.setData({
+          returnValue: say,
+          allContentList: outsider.data.allContentList
+        })
       }
     })
   },
@@ -111,7 +114,7 @@ Page({
   onLoad: function() {
     let that = this;
     wx.setNavigationBarTitle({
-      title: 'l',
+      title: '聊天机器人24小时在线',
       navigationBarBackgroundColor: 'blue',
       success: function() {
         // console.log("success")

@@ -13,10 +13,10 @@
         </view>
 
     <view class="section__title">你输入的是：{{inputValue}}</view>
-        <input  bindinput="bindKeyInput" placeholder="输入同步到view中"/>
+        <!-- <input  bindinput="bindKeyInput" placeholder="输入同步到view中"/> -->
     </view>
   <view class="handleBox">
     <input class="input_submit" placeholder="" value="{{inputTemp}}" bindinput="bindKeyInput" />
-    <button type="submit" class="button green" size="mini" bindtap="submitTo" >发送</button>
+    <button type="submit" class="button green" size="mini" bindtap="submitTo"   >发送</button>
   </view>
 </view>
